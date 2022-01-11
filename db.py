@@ -11,9 +11,11 @@ def create_tables():
     tables = [
         """CREATE TABLE IF NOT EXISTS recibo( 
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cnpj text not null,
             nome_estabelecimento TEXT NOT NULL,
+            descricao TEXT null
             total REAL NOT NULL,
-            rate INTEGER NOT NULL)"""
+            imagem BLOB NULL)"""
     ]
     db = get_db()
     cursor = db.cursor()

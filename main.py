@@ -1,6 +1,6 @@
 from flask import Flask, json, jsonify, request
 from flask_pydantic_spec import FlaskPydanticSpec
-import game_controller
+import refund_controller
 from db import create_tables
 
 app = Flask(__name__)
@@ -9,37 +9,41 @@ spec.register(app)
 
 @app.route('/refunds', methods=["GET"])
 def get_refunds():
-    games = game_controller.get_games()
-    return jsonify(games)
+    recibo = refund_controller.get_recibo()
+    #games = game_controller.get_games()
+    return jsonify(recibo)
 
 @app.route("/refund", methods=["POST"])
 def insert_refund():
-    game_details = request.get_json()
-    name = game_details["name"]
-    price = game_details["price"]
-    rate = game_details["rate"]
-    result = game_controller.insert_game(name, price, rate)
+    recibo_details = request.get_json()
+    cnpj = recibo_details["cnpj"]
+    nome_estabelecimento = recibo_details["nome_estabelecimento"]
+    descricao = recibo_details["descricao"]
+    total = recibo_details["total"]
+    imagem = recibo_details["imagem"]
+    result = refund_controller.insert_recibo(cnpj, nome_estabelecimento, descricao, total, imagem)
     return jsonify(result)
 
 @app.route("/refund", methods=["PUT"])
 def update_refund():
-    game_details = request.get_json()
-    id = game_details["id"]
-    name = game_details["name"]
-    price = game_details["price"]
-    rate = game_details["rate"]
-    result = game_controller.update_game(id, name, price, rate)
+    recibo_details = request.get_json()
+    cnpj = recibo_details["cnpj"]
+    nome_estabelecimento = recibo_details["nome_estabelecimento"]
+    descricao = recibo_details["descricao"]
+    total = recibo_details["total"]
+    imagem = recibo_details["imagem"]
+    result = refund_controller.update_recibo(id, cnpj, nome_estabelecimento, descricao, total, imagem)
     return jsonify(result)
 
 @app.route("/refund/<id>", methods=["DELETE"])
 def delete_refund(id):
-    result = game_controller.delete_game(id)
+    result = refund_controller.delete_recibo(id)
     return jsonify(result)
 
 @app.route("/refund/<id>", methods=["GET"])
 def get_refund_by_id(id):
-    game = game_controller.get_by_id(id)
-    return jsonify(game)
+    recibo = refund_controller.get_by_id(id)
+    return jsonify(recibo)
 
 
 # Habilitando CORS
