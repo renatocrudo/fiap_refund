@@ -13,7 +13,7 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             cnpj text not null,
             nome_estabelecimento TEXT NOT NULL,
-            descricao TEXT null
+            descricao TEXT null,
             total REAL NOT NULL,
             imagem BLOB NULL)"""
     ]
