@@ -1,4 +1,5 @@
 from flask import Flask, json, jsonify, request
+import requests
 from flask_pydantic_spec import FlaskPydanticSpec
 import refund_controller
 from db import create_tables
@@ -21,8 +22,13 @@ def insert_refund():
     descricao = recibo_details["descricao"]
     total = recibo_details["total"]
     imagem = recibo_details["imagem"]
+    url_api = "http://localhost:6000/read_ocr"
+    response = requests.post(url = url_api, json={'foto_recibo':imagem})
+    texto = response.content.decode()
+    print(response.content)
     result = refund_controller.insert_recibo(cnpj, nome_estabelecimento, descricao, total, imagem)
-    return jsonify(result)
+    
+    return jsonify(texto)
 
 @app.route("/refund", methods=["PUT"])
 def update_refund():
@@ -44,6 +50,7 @@ def delete_refund(id):
 def get_refund_by_id(id):
     recibo = refund_controller.get_by_id(id)
     return jsonify(recibo)
+
 
 
 # Habilitando CORS
